@@ -6,6 +6,7 @@ const workerSchema = new Schema({
     lastName: {type: String, required: true},
     email: {type: String, required: true},
     department: {type: String, required: true},
+    salary: {type:Number, required: true},
     age: { type: Number, required: true },
     goals: {type: String, required: true},
     bonusTracker: {type: Number, min: -2, max: 2, default: 0},
