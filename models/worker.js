@@ -10,6 +10,7 @@ const workerSchema = new Schema({
     age: { type: Number, required: true },
     goals: {type: String, required: true},
     bonusTracker: {type: Number, min: -2, max: 2, default: 0},
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     img: {type: String, default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
 }, { timestamps: true })
 
