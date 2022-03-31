@@ -2,9 +2,10 @@ const express = require('express')
 const router = express()
 const Worker = require('../models/worker')
 
-router.get('/', async(req,res)=>{
+router.get('/:id', async(req,res)=>{
     try{
-        const workers = await Worker.find()
+        const workers = await Worker.find({user: req.params.id}).populate('user')
+        console.log(workers)
         res.send({
             success: true,
             data: workers
@@ -19,7 +20,19 @@ router.get('/', async(req,res)=>{
 
 router.post('/', async(req,res)=>{
     try{
-        const newWorker = await Worker.create(req.body);
+        console.log(req.body.user)
+        const newWorker = await Worker.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            department: req.body.department,
+            salary: req.body.salary,
+            age: req.body.age,
+            goals: req.body.goals,
+            bonusTracker:-2,
+            user: req.body.user,
+            img: req.body.img
+        });
         res.send({
             success: true,
             data: newWorker
@@ -32,24 +45,24 @@ router.post('/', async(req,res)=>{
     }
 })
 
-router.get('/:id', async(req,res)=>{
-    try{
-        const worker = await Worker.findById(req.params.id)
-        if (!worker){
-            throw new Error('There is no such employee in our database.')
-        }
-        res.send({
-            success: true,
-            data: worker
-        })
-    }catch(err){
-        console.log(err)
-        res.send({
-            success: false,
-            data: err.message
-        })
-    }
-})
+// router.get('/:id', async(req,res)=>{
+//     try{
+//         const worker = await Worker.findById(req.params.id)
+//         if (!worker){
+//             throw new Error('There is no such employee in our database.')
+//         }
+//         res.send({
+//             success: true,
+//             data: worker
+//         })
+//     }catch(err){
+//         console.log(err)
+//         res.send({
+//             success: false,
+//             data: err.message
+//         })
+//     }
+// })
 
 router.put('/:id', async(req,res)=>{
     try{

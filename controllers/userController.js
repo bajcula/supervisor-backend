@@ -20,7 +20,6 @@ router.post('/', async(req,res)=>{
 router.post('/login', async(req,res)=>{
     try{
         const user = await User.findOne({email: req.body.email});
-        let err
         if (!user){
             let err = 'There is no such user in our database.'
             res.send({
