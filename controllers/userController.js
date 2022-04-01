@@ -1,10 +1,17 @@
 const express = require('express')
 const router = express()
 const User = require('../models/user')
+const bcrypt = require('bcryptjs');
 
 router.post('/', async(req,res)=>{
     try{
-        const newUser = await User.create(req.body);
+        const newUser = await User.create({
+            firstName: req.body.firstName,
+            lastName:req.body.lastName,
+            email: req.body.email,
+            img: req.body.img,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+        });
         res.send({
             success: true,
             data: newUser
@@ -27,7 +34,7 @@ router.post('/login', async(req,res)=>{
                 data:err
             })
         } else {
-            if (user.password === req.body.password) {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
                 res.send({
                     success: true,
                     data: user
@@ -52,18 +59,17 @@ router.post('/login', async(req,res)=>{
 router.put('/:id/updatepassword', async(req,res)=>{
     try{
         const user = await User.findById(req.params.id)
-        if (user.password !== req.body.oldPass) {
-            res.send({
-                success:false,
-                data: "Your old password doesn't match with our database record."
-            })
-        } else {
-            let newPassword = req.body.newPass
-            user.password = newPassword
+        if (bcrypt.compareSync(req.body.oldPass, user.password)) {
+            user.password = bcrypt.hashSync(req.body.newPass, bcrypt.genSaltSync(10))
             user.save()
             res.send({
                 success: true,
                 data: user
+            })
+        } else {
+            res.send({
+                success:false,
+                data: "Your old password doesn't match with our database record."
             })
         }
     }catch(err){
