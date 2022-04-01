@@ -5,7 +5,6 @@ const Worker = require('../models/worker')
 router.get('/:id', async(req,res)=>{
     try{
         const workers = await Worker.find({user: req.params.id}).populate('user')
-        console.log(workers)
         res.send({
             success: true,
             data: workers
@@ -17,10 +16,8 @@ router.get('/:id', async(req,res)=>{
         })
     }
 })
-
 router.post('/', async(req,res)=>{
     try{
-        console.log(req.body.user)
         const newWorker = await Worker.create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -44,26 +41,6 @@ router.post('/', async(req,res)=>{
         })
     }
 })
-
-// router.get('/:id', async(req,res)=>{
-//     try{
-//         const worker = await Worker.findById(req.params.id)
-//         if (!worker){
-//             throw new Error('There is no such employee in our database.')
-//         }
-//         res.send({
-//             success: true,
-//             data: worker
-//         })
-//     }catch(err){
-//         console.log(err)
-//         res.send({
-//             success: false,
-//             data: err.message
-//         })
-//     }
-// })
-
 router.put('/:id', async(req,res)=>{
     try{
         const worker = await Worker.findByIdAndUpdate(req.params.id, req.body, {new: true})
@@ -78,7 +55,6 @@ router.put('/:id', async(req,res)=>{
         })
     }
 })
-
 router.delete('/:id', async(req,res)=>{
     try{
         const worker = await Worker.findByIdAndDelete(req.params.id)
