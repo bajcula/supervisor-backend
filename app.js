@@ -14,8 +14,8 @@ const db = mongoose.connection;
 db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
 db.on('connected', () => console.log('mongo connected: '));
 db.on('disconnected', () => console.log('mongo disconnected'));
-const Worker = require('./models/worker')
-const User = require('./models/user')
+// const Worker = require('./models/worker')
+// const User = require('./models/user')
 
 app.use(morgan('short'))
 app.use(cors())
