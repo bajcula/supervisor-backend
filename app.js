@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const workerController = require('./controllers/workerController')
 const userController = require('./controllers/userController')
 const app = express();
+const port = process.env.PORT || 3001
 const MONGOURI = process.env.MONGO_URI
 mongoose.connect(MONGOURI, {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection;
@@ -25,6 +26,6 @@ app.use('/workers', workerController)
 app.use('/users', userController)
 
 
-app.listen(3001, () => {
+app.listen(port, () => {
     console.log('app running...')
 })
