@@ -49,6 +49,31 @@ router.post('/login', async(req,res)=>{
     }
 })
 
+router.put('/:id/updatepassword', async(req,res)=>{
+    try{
+        const user = await User.findById(req.params.id)
+        if (user.password !== req.body.oldPass) {
+            res.send({
+                success:false,
+                data: "Your old password doesn't match with our database record."
+            })
+        } else {
+            let newPassword = req.body.newPass
+            user.password = newPassword
+            user.save()
+            res.send({
+                success: true,
+                data: user
+            })
+        }
+    }catch(err){
+        res.send({
+            success: false,
+            data: err.message
+        })
+    }
+})
+
 router.put('/:id', async(req,res)=>{
     try{
         const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
@@ -63,6 +88,8 @@ router.put('/:id', async(req,res)=>{
         })
     }
 })
+
+
 
 router.delete('/:id', async(req,res)=>{
     try{
