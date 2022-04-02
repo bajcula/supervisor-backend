@@ -94,11 +94,18 @@ router.put('/:id', async(req,res)=>{
 })
 router.delete('/:id', async(req,res)=>{
     try{
-        const user = await User.findByIdAndDelete(req.params.id)
-        res.send({
-            success: true,
-            data: user
-        })
+        if(req.params.id == "624774fe5865f7c623bb3393") {
+            res.send({
+                success:false,
+                data: "Nice try. Unfortunately, can't let you delete this profile!"
+            })
+        } else {
+            const user = await User.findByIdAndDelete(req.params.id)
+            res.send({
+                success: true,
+                data: user
+            })
+        }
     }catch(err){
         res.send({
             success: false,
