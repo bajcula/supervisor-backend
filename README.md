@@ -23,6 +23,10 @@ SUPERVISOR is an app for keeping track of your employees. You can add, edit and 
 
 - Quotes Inspirational Quotes Motivational Quotes API
 
+### Restful Routes:
+
+![routes](https://imgur.com/wH7GFw8 "restful routes")
+
 ### Aproach:
 
 Utilized two related models and their controllers with routes for creating, editing and deleting the objects from the database. Implemented bcrypt hashing for the security of user passwords.
