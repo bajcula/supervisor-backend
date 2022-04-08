@@ -57,19 +57,27 @@ router.post('/login', async(req,res)=>{
 
 router.put('/:id/updatepassword', async(req,res)=>{
     try{
-        const user = await User.findById(req.params.id)
-        if (bcrypt.compareSync(req.body.oldPass, user.password)) {
-            user.password = bcrypt.hashSync(req.body.newPass, bcrypt.genSaltSync(10))
-            user.save()
-            res.send({
-                success: true,
-                data: user
-            })
-        } else {
+        // "insurance" for someone changing the public showing profile password
+        if(req.params.id == "624774fe5865f7c623bb3393") {
             res.send({
                 success:false,
-                data: "Your old password doesn't match with our database record."
+                data: "It is rude trying to change other people's passwords, isn't it?!"
             })
+        } else {
+            const user = await User.findById(req.params.id)
+            if (bcrypt.compareSync(req.body.oldPass, user.password)) {
+                user.password = bcrypt.hashSync(req.body.newPass, bcrypt.genSaltSync(10))
+                user.save()
+                res.send({
+                    success: true,
+                    data: user
+                })
+            } else {
+                res.send({
+                    success:false,
+                    data: "Your old password doesn't match with our database record."
+                })
+            }
         }
     }catch(err){
         res.send({
@@ -94,6 +102,7 @@ router.put('/:id', async(req,res)=>{
 })
 router.delete('/:id', async(req,res)=>{
     try{
+        // "insurance" for someone deleting the public showing profile
         if(req.params.id == "624774fe5865f7c623bb3393") {
             res.send({
                 success:false,
